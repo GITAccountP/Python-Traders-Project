@@ -1,0 +1,219 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+
+<!-- define the block content to be injected -->
+
+{% block content %}
+<div class="card my-4">
+	<div>
+		<ul class="nav nav-tabs">
+            <li class="nav-item" style="cursor:pointer" onclick="GetProductDetails()">
+				<a class="nav-link" id="ProductHomeTab" data-bs-toggle="tab"> Product Orders </a>
+			</li>
+			<li class="nav-item" style="cursor:pointer" onclick="GetAnnualMonthlyProdAnalysis()">
+				<a class="nav-link" id="AnnualManualSalesTab" data-bs-toggle="tab">Annual/Monthly Analysis [2.A]</a>
+			</li>
+			<li class="nav-item" style="cursor:pointer" onclick="GetTopBottomProductOrders()">
+				<a class="nav-link" id="TopBottomTab" data-bs-toggle="tab">Top/Bottom Analysis [2.B]</a>
+			</li>
+			<li class="nav-item" style="cursor:pointer" onclick="GetProductSalesAnalysis()">
+				<a class="nav-link" id="ProductsTab" data-bs-toggle="tab">Sales Analysis [2.C]</a>
+			</li>
+			<li class="nav-item" style="cursor:pointer" onclick="GetCategorySalesAnalysis()">
+				<a class="nav-link" id="CategoryTab" data-bs-toggle="tab">Category Sales Analysis [2.D]</a>
+			</li>
+	  	</ul>
+	</div>
+
+	<div class="container card-body tab-content container" >
+		<div id="ProductInformation">
+			Product Information is Showing
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+ 
+	GetProductDetails();
+});
+
+
+function ShowProductHomeTab() {
+	ClearActive();
+	$('#ProductHomeTab').addClass('selectedTab');
+	$('#ProductInformation').show();
+}
+
+function ClearActive() {
+	$('.nav-link').removeClass('selectedTab');
+}
+
+function GetProductDetails(){
+	ClearActive();
+	$('#ProductHomeTab').addClass('selectedTab');
+
+		   
+
+	$.ajax({
+	   
+		url: "{% url 'DjTraders.GetEachProductDetails' %}",
+		data: {
+			product_id: {{product.product_id}},
+		},
+
+		beforeSend: function () {
+	   
+			$('#ProductInformation').empty();
+			$('#ProductInformation').html("Fetching results...");
+		},
+
+		success: function(result) {
+			$('#ProductInformation').empty();
+			$('#ProductInformation').html(result);
+		},
+
+		error: function(){
+			$('#ProductInformation').empty();
+			$('#ProductInformation').html('An Error occurred in Request: {{request}}');
+		},
+
+		complete: function(){
+			$('#ProductInformation').show();
+		},
+
+	});
+}
+
+function GetAnnualMonthlyProdAnalysis() {
+    ClearActive();
+    $('#AnnualManualSalesTab').addClass('selectedTab');
+ 
+    var year = $('#selOrderYear').val();
+    var month = $('#selOrderMonth').val();
+ 
+    $.ajax({
+        url: "{% url 'DjTraders.AnnualAndMonthlyProduct' pk=product.product_id %}",
+        data: {
+            'selOrderYear': year,
+            'selOrderMonth': month,  
+        },
+        beforeSend: function () {
+            $('#ProductInformation').empty().html("Fetching results...");
+        },
+        success: function(result) {
+            $('#ProductInformation').empty().html(result);
+        },
+        error: function() {
+            $('#ProductInformation').empty().html('An Error occurred in Request');
+        },
+        complete: function() {
+            $('#ProductInformation').show();
+        },
+    });
+   
+}
+
+{% comment %} Assgn 3 2.B {% endcomment %}
+    function GetTopBottomProductOrders(){
+        ClearActive();
+        $('#TopBottomTab').addClass('selectedTab');
+ 
+        $.ajax({
+            url: "{% url 'DjTraders.TopBottomProductAnalysis' %}",
+            data: {
+                product_id: {{product.product_id}},
+            },
+ 
+            beforeSend: function () {
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html("Fetching results...");
+            },
+ 
+            success: function(result) {
+ 
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html(result);
+            },
+ 
+            error: function(){
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html('An Error occurred in Request: {{request}}');
+            },
+ 
+            complete: function(){
+                $('#ProductInformation').show();
+            },
+ 
+        });
+    }
+
+    function GetProductSalesAnalysis(){
+        ClearActive();
+        $('#ProductsTab').addClass('selectedTab');
+ 
+        $.ajax({
+            url: "{% url 'DjTraders.ProductSaleAnalysis' pk=product.product_id %}",
+            data: {
+                product_id: {{product.product_id}},
+            },
+ 
+            beforeSend: function () {
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html("Fetching results...");
+            },
+ 
+            success: function(result) {
+ 
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html(result);
+            },
+ 
+            error: function(){
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html('An Error occurred in Request: {{request}}');
+            },
+ 
+            complete: function(){
+                $('#ProductInformation').show();
+            },
+ 
+        });
+    }
+
+    function GetCategorySalesAnalysis(){
+        ClearActive();
+        $('#CategoryTab').addClass('selectedTab');
+ 
+        $.ajax({
+            url: "{% url 'DjTraders.CategorySaleAnalysis' pk=product.product_id %}",
+            data: {
+                product_id: {{product.product_id}},
+            },
+ 
+            beforeSend: function () {
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html("Fetching results...");
+            },
+ 
+            success: function(result) {
+ 
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html(result);
+            },
+ 
+            error: function(){
+                $('#ProductInformation').empty();
+                $('#ProductInformation').html('An Error occurred in Request: {{request}}');
+            },
+ 
+            complete: function(){
+                $('#ProductInformation').show();
+            },
+ 
+        });
+    }
+</script>
+
+{% endblock %}

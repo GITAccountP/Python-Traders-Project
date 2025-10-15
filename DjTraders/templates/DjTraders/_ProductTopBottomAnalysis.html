@@ -1,0 +1,68 @@
+{% block content %}
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+ 
+<div class="my-2" id="AllProducts">
+    <div id="SearchBar" class="navbar small px-2 rounded-2 shadow">
+        <div>
+        <h5>Top and Bottom 10 Revenue-Generating Products {% if selOrderYear %} in {{ selOrderYear }} {% endif %}</h5>
+        </div>
+        <div class="mx-2">
+            <label for="selOrderYear" class="mx-1">Year</label>
+            <select name="selOrderYear" id="selOrderYear" class="form-select form-select-sm" onchange="RefreshOrdersInYearPlot()">
+                <option value="" {% if not selOrderYear %} selected="selected" {% endif %}>All</option>
+                    {% for year in OrderYears %}
+                <option value="{{ year.Year }}" {% if year.Year == selOrderYear|add:"0" %}  selected="selected" {% endif %}>
+                            {{ year.Year }}
+                </option>
+                    {% endfor %}
+            </select>
+        </div>
+    </div>
+ 
+    <div class="my-4 row">
+        <div class="col-8" style="height:600px; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            {{ top_10_plot|safe }}
+        </div>
+    </div>
+    <div class="my-4 row">
+        <div class="col-8" style="height:600px; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            {{ bottom_10_plot|safe }}
+        </div>
+    </div>
+
+    <div style="padding-left:90%;padding-bottom:5px;">
+        <a class="btn btn-outline-info mt-3" href = "{% url 'DjTraders.Products' %}" style="right: 0; bottom: 20px; margin-right: 20px; border-radius: 5px;">
+            <i class="fa-solid fa-rotate-left" style="color:black;"></i>
+            Back
+        </a>
+    </div>
+</div>
+ 
+<script>
+    // Trigger AJAX call when year changes
+    function RefreshOrdersInYearPlot() {
+        const selOrderYear = $('#selOrderYear').val();
+ 
+        $.ajax({
+            url: "{% url 'DjTraders.TopBottomProductAnalysis' %}",
+            data: { selOrderYear: selOrderYear },
+            beforeSend: function () {
+                $('#AllProducts').html("Fetching results...");
+            },
+            success: function (result) {
+                $('#AllProducts').html(result);
+            },
+            error: function () {
+                $('#AllProducts').html('An error occurred while fetching data.');
+            }
+        });
+    }
+ 
+    // Bind the dropdown change event to refresh function
+    $(document).ready(function () {
+        $('#selOrderYear').on('change', RefreshOrdersInYearPlot);
+    });
+</script>
+{% endblock %}

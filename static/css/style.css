@@ -1,0 +1,61 @@
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+ul.errorlist{
+	display: none;
+}
+
+.tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+input[data-hover]:hover::after {
+    content: attr(data-hover);
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    white-space: nowrap;
+    transform: translateY(-120%);
+    margin-top: -5px;
+    z-index: 10;
+}
+
+.selectedTab {
+  background-color: lightsteelblue;
+  border: 1px solid lightgray;
+  box-shadow:black;
+}
+
+.nav-tabs .nav-item {
+  margin-right: 10px;
+}
+
+.nav-tabs .nav-link {
+  color: #007bff;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #0056b3;
+  background-color: #f8f9fa;
+  border: 1px solid #007bff;
+}
+
+.nav-tabs .nav-link.active {
+  color: white; 
+  background-color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.nav-tabs .nav-item {
+  cursor: pointer;
+}

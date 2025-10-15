@@ -1,0 +1,27 @@
+{% block content %}
+ 
+<div class="card my-4 border-0" id="ProductCategorySales">
+    <div class="card-header py-2 my-2">
+        <h4>
+            Product: {{ product.product_name }}
+        </h4>
+    </div>
+    <div class="row">
+        <div id="CategoryRevenuesPlot" class="col-md-6" style="height:600px; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        {{ CategoryRevenuesPlot|safe }}
+        </div>
+ 
+        <div id="CategoryPlot" class="col-md-6" style="height:600px; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        {{ CategoryPlot|safe }}
+        </div>
+    </div>
+
+    <div style="padding-left:90%;padding-bottom:5px;">
+        <a class="btn btn-outline-info mt-3" href = "{% url 'DjTraders.Products' %}" style="right: 0; bottom: 20px; margin-right: 20px; border-radius: 5px;">
+            <i class="fa-solid fa-rotate-left" style="color:black;"></i>
+            Back
+        </a>
+    </div>
+</div>
+ 
+{% endblock %}

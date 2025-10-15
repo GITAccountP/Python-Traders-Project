@@ -1,0 +1,45 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+ 
+<!-- define the block content to be injected -->
+ 
+{% block content %}
+ 
+ 
+<div class="card my-4 border-0">
+    <div class="card-header py-2 my-2">
+        <h4>
+            {{product.product_name}}
+        </h4>
+    </div>
+
+    <h1>Annual Sales for {{ user.username }}</h1>
+
+    <p>Total Orders: {{ total_orders }}</p>
+    <p>Total Products Sold: {{ total_products_sold }}</p>
+    <p>Total Revenue: ${{ total_revenue }}</p>
+
+    <h2>Sales Breakdown by Category</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Orders</th>
+                <th>Quantity Sold</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in category_sales %}
+            <tr>
+                <td>{{ category.product__category__name }}</td>
+                <td>{{ category.category_orders }}</td>
+                <td>{{ category.category_quantity_sold }}</td>
+                <td>${{ category.category_revenue }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

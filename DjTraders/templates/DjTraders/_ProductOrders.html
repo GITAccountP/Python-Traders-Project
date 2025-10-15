@@ -1,0 +1,96 @@
+{% block content %}
+
+<div class="card my-4">
+
+    <div class="card-body border-0 custom-body">
+        <div class="row row-cols-2" id="">
+            <div class="col-5">
+              <h2 class="">
+                  Product Information
+              </h2>
+                <div>
+                    <thead>
+                        <th>
+                            <td class="text-center" style=""> <b> Product : </b></td>
+                            <td>{{product.product_name}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="text-center" style=""> <b> Category : </b> </td>
+                            <td>{{product.category.category_name}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="text-center" style="width:35%"> <b> Price : </b> </td>
+                            <td>{{product.price}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="" style=""> <b> Unit : </b> </td>
+                            <td>{{product.unit}}</td>
+                        </th>
+                        <br>
+                    </thead>
+                </div>
+            </div>
+
+			<div class="col-7">
+                <h5 class="">
+                    {{product.product_name}} Order Details
+                </h5>
+                <div class="" id="Orders">
+				{% for  productCustomer in product.PurchasedBy %}
+				<div class="card-body border-0">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="flush-heading{{forloop.counter}}">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{forloop.counter}}" aria-expanded="false" aria-controls="flush-collapse{{forloop.counter}}">
+								{{forloop.counter}}. {{productCustomer.customer_name}} 
+							</button>
+						</h2>
+						<div id="flush-collapse{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{forloop.counter}}" data-bs-parent="#accordionFlushExample">
+							<div class="accordion-body">
+								<table class="table" style="width:100%">
+									<tr>
+										<th colspan=4>
+											{{forloop.counter}}. {{productCustomer.customer_name}} 
+										</th>
+									</tr>
+									<tr>
+										<th> Customer Name </th>
+										<th> Contact Name </th>
+										<th class="text-end pe-2">  Country </th>
+										<th> &nbsp;</th>
+									</tr>
+									<tr class="p-2">
+										<td>{{productCustomer.customer_name}} </td>
+										<td>{{productCustomer.contact_name}} </td>
+										<td> {{productCustomer.country}}</td>
+										<td title="Click to view customer details" class="">
+											<a 	href = {% url 'DjTraders.CustomerDetail' pk=productCustomer.customer_id %}
+												class="">
+												<i class="fa-solid fa-user-tag fa-lg pt-2" style="color: steelblue;"></i>
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div style="padding-left:90%;padding-bottom:5px;">
+		<a class="btn btn-outline-info mt-3" href = "{% url 'DjTraders.Products' %}" style="right: 0; bottom: 20px; margin-right: 20px; border-radius: 5px;">
+			<i class="fa-solid fa-rotate-left" style="color:black;"></i>
+			Back
+		</a>
+	</div>
+
+</div>
+
+{% endblock %}

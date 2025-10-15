@@ -1,0 +1,219 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+
+<!-- define the block content to be injected -->
+
+{% block content %}
+
+<section id = "SearchBar" 
+		class="small px-2 rounded-2 shadow">
+	<form action="{% url 'DjTraders.Products' %}">
+		<div class="navbar py-4">
+			<div class="nav">
+				<h5 class="ps-2 py-1">
+					<i class="fa-brands fa-product-hunt fa-lg" style="color: steelblue;"></i>
+					Search Products By:{{ ProductName }}{{ srchCategory }}
+
+				</h5>
+			</div>
+			<div class="nav">
+				<div class="mx-1">
+					<div class="px-1">Product</div>
+					<input type="text" 
+						name="ProductName" id="ProductName" 
+						class="form-control form-control-sm" 
+						width:"100%"
+						placeholder="Product Name"
+						value="{{ ProductName }}">
+				</div>
+
+				<div class="nav">
+					<div class="mx-1">
+						<div class="px-1">Product Price</div>
+						<input type="text" 
+							name="ProductPrice" id="ProductPrice"
+							class="form-control form-control-sm" 
+							width:"100%"
+							placeholder="Product Price using <,>,<=,>="
+							value="{{ ProductPrice }}">
+					</div>
+				</div>
+
+				<div class="mx-2">
+					<span class="mx-1">Category</span>
+					<div>
+						<select name="srchCategory" id="srchCategory"
+								class="form-select form-select-sm"
+								onchange="this.form.submit()">
+							<option value="">Select Category</option>
+				
+							{% for category in Categories %}
+								<option value="{{ category }}"
+									{% if category == srchCategory %}
+										selected="selected"
+									{% endif %}>
+									{{ category }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="nav" style="padding-left:80%; padding-top:8px;"> 
+				<button class="btn btn-outline-secondary btn-sm mx-2" type="submit">
+					<i class="fa-solid fa-magnifying-glass p-1"></i>
+					Search
+				</button>
+				<button 
+					class="btn btn-outline-secondary btn-sm mx-2" 
+					type=""
+					onclick = "resetForm()">
+					<i class="fa-solid fa-rotate" style="color: forestgreen"></i>
+					Reset
+			</button>
+
+			</div>
+		</div>
+
+		<div class="navbar">
+			<div></div>
+			<div>
+				<a href = {% url 'DjTraders.ProductAdd'%}
+					class="text-dark text-decoration-none pe-4" 
+					title= "Add a new Product"
+					style="cursor:pointer">
+						<i class="fa-solid fa-file-circle-plus" 
+							style="color:steelblue"></i>
+						Add a Product
+				</a>
+
+			</div>
+		</div>
+		
+	</form>
+</section>
+
+<div class="container shadow-sm small">
+	{% if products %}
+	<table class="table table-hover order-column "
+		   id="ProductsTable" width="100%">
+		<thead>
+			<tr class="fs-6">
+				<th class="text-center" style=""> Product </th>
+				<th class="ps-1" style=""> Category</th>
+				<th class="" style="">Price</th>
+				<th class="text-center" style="width:20%">Unit</th>
+				<th> View</th>
+				<th> Edit</th>
+				<th> Delete</th>
+				<th> Status </th>
+				<th> Purchase Summary </th>
+			</tr>
+		</thead>
+
+		<tbody>
+	
+			{% for eachProduct in products %}
+			<tr>
+				<td>{{eachProduct.product_name}}</td>
+				<td>{{eachProduct.category.category_name}}</td>
+				<td>{{eachProduct.price}}</td>
+				<td class='text-center'>{{eachProduct.unit}}</td>
+				<td title="View Product Details" class="mt-1">
+					<a 	href = {% url 'DjTraders.ProductDetail' pk=eachProduct.product_id %}
+						class="">
+						<i class="fa-regular fa-note-sticky fa-lg pt-2" style="color: steelblue;"></i>
+					</a>
+				</td>
+				<td title="Edit Product" class="mt-1">
+					<a 	href = {% url 'DjTraders.ProductEdit' pk=eachProduct.product_id %}
+						class="">
+						<i class="fa-solid fa-file-pen fa-lg pt-2" style="color: forestgreen;"></i>
+					</a>
+				</td>
+
+				<td title="Delete Product" class="mt-1">
+					{% if eachProduct.is_available %}
+						<i class="fa-solid fa-trash-can fa-lg pt-2" style="color: grey; cursor: not-allowed;" title="Product is available and can not be deleted."></i>						
+					{% else %}
+						<a href="{% url 'DjTraders.ProductDelete' pk=eachProduct.product_id %}" class="">
+							<i class="fa-solid fa-trash-can fa-lg pt-2" style="color: firebrick;"></i>
+						</a>
+					{% endif %}
+				</td>
+
+				<td>{{ eachProduct.get_availabilityStatus }}</td>
+
+				<td title="Purchase Summary" class="mt-1">
+					<a 	href = {% url 'DjTraders.ProductPurchase' pk=eachProduct.product_id %}
+						class="">
+						<i class="fa-regular fa-newspaper fa-lg pt-2" style="color: steelblue; text-align:center;"></i>
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>	
+	{% else %}
+		No Products Found
+	{% endif %}
+</div>
+
+
+<!-- added Django page button icons, bootstrap formatting -->
+{% if page_obj.has_other_pages %}
+<div class="pagination d-flex justify-content-end">
+	<div class="fw-bolder">
+		<span class="step-links">
+			{% if page_obj.has_previous %}
+				<a class="btn btn-light" title="First"
+					href="?page=1">
+					<i class="fa-solid fa-backward-step"></i>
+				</a>
+				<a class="btn btn-light" title="Previous"
+					href="?page={{ page_obj.previous_page_number }}">
+					<i class="fa-solid fa-caret-left"></i>
+				</a>
+			{% endif %}
+
+			<span class="current btn btn-light">
+				Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+			</span>
+
+			{% if page_obj.has_next %}
+				<a class="btn btn-light" title="Next"
+					href="?page={{ page_obj.next_page_number }}">
+					<i class="fa-solid fa-caret-right"></i>
+				</a>
+				<a class="btn btn-light" title="Last"
+					href="?page={{ page_obj.paginator.num_pages }}">
+					<i class="fa-solid fa-forward-step"></i>
+				</a>
+			{% endif %}
+		</span>
+	</div>
+</div>
+{% endif %}
+
+
+<!-- Added -->
+<script type="text/javascript">
+
+$(document).ready(function() {
+	//debugger;
+	MakeDataTable('ProductsTable');
+});
+
+function resetForm() {
+	debugger;
+	document.getElementById("ProductName").value = "";
+    {% comment %} document.getElementById("PriceOperator").selectedIndex = 0; {% endcomment %}
+    document.getElementById("srchCategory").selectedIndex = 0;
+    document.getElementById("ProductPrice").value = "";
+
+	document.getElementById('searchForm').submit();
+}
+
+</script>
+
+{% endblock %}

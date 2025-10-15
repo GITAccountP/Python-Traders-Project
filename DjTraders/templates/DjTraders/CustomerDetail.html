@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+<!-- define the block content to be injected -->
+
+{% block content %}
+
+
+<div class="card my-4 border-0">
+	<div class="card-header py-2 my-2">
+		<h4>
+			{{customer.customer_name}}
+		</h4>
+	</div>
+
+	<!-- 
+		v3.1 Added navbar Navigation for individual partials.
+	-->
+	<div>
+		<ul class="nav nav-tabs">
+			<li class="nav-item"style="cursor:pointer" onclick="ShowHomeTab();">
+				<a class="nav-link active" id="CustomerHomeTab"> Home </a>
+			</li>
+            <li class="nav-item" style="cursor:pointer" onclick="GetOrdersPlaced();">
+				<a class="nav-link" id="OrdersPlacedTab"> Orders Placed </a>
+			</li>
+
+			<li class="nav-item" style="cursor:pointer" onclick="GetOrdersByDate();">
+				<a class="nav-link" id="OrdersByDateTab"> Orders By Date [1.B] </a>
+			</li>
+
+			<li class="nav-item" style="cursor:pointer" onclick="GetOrdersByProduct()">
+				<a class="nav-link" id="ProductsTab"> Products  [1.C] </a>
+			</li>
+
+			<li class="nav-item" style="cursor:pointer" onclick="GetOrdersByCategory()">
+				<a class="nav-link" id="CategoriesTab"> Categories [1.D] </a>
+			</li>
+	  	</ul>
+	</div>
+
+	<div class="container card-body border-0" id="CustomerHome">
+		<div class="row row-cols-2" id="">
+			<div class="col-7">
+				<h6 class="">
+				  Orders Placed by: {{customer.customer_name}} 
+				</h6>
+				<div style="border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+					{{OrdersPlot|safe}}
+				</div>
+			</div>
+
+			<div class="col-5">
+				<div id="OrdersPlaced">
+					Orders Retrieved From AJAX Call to Partial Page
+					{% include 'DjTraders/_OrdersPlaced.html'%}
+			</div>
+		</div>
+
+		</div>
+	</div>
+
+	<div class="container card-body tab-content container">
+		<div id="CustomerInformation">
+			Customer Information is Showing
+		</div>
+	</div>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function ()
+    {
+		ShowHomeTab();
+    });
+
+
+	function ShowHomeTab(){
+
+		ClearActive();
+        $('#CustomerHomeTab').addClass('selectedTab');
+		
+        $('#CustomerHome').show();
+		$('#CustomerInformation').hide();
+	}
+
+	function GetOrdersPlaced(){
+
+		ClearActive();
+        $('#OrdersPlacedTab').addClass('selectedTab');
+
+				
+
+		$.ajax({
+			
+			url: "{% url 'DjTraders.OrdersPlaced' %}",
+			data: {
+				customer_id: {{customer.customer_id}},
+			},
+
+			beforeSend: function () {
+			
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html("Fetching results...");
+			},
+
+			success: function(result) {
+				$('#CustomerHome').hide();
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html(result);
+			},
+
+			error: function(){
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html('An Error occurred in Request: {{request}}');
+			},
+
+			complete: function(){
+				$('#CustomerInformation').show();
+			},
+
+		});
+	}
+
+
+	function GetOrdersByDate(){
+		
+		//debugger;
+		ClearActive();
+        $('#OrdersByDateTab').addClass('selectedTab');
+
+		$.ajax({
+			
+			url: "{% url 'DjTraders.OrdersByDate' %}",
+			data: {
+				customer_id: {{customer.customer_id}},
+			},
+
+			beforeSend: function () {
+			
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html("Fetching results...");
+			},
+
+			success: function(result) {
+				$('#CustomerHome').hide();
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html(result);
+			},
+
+			error: function(){
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html('An Error occurred in Request: {{request}}');
+			},
+
+			complete: function(){
+				$('#CustomerInformation').show();
+			},
+
+		});
+	}
+
+	function GetOrdersByProduct(){
+		
+		//debugger;
+		ClearActive();
+        $('#ProductsTab').addClass('selectedTab');
+
+		$.ajax({
+			
+			url: "{% url 'DjTraders.OrdersByProduct' %}",
+			data: {
+				customer_id: {{customer.customer_id}},
+			},
+
+			beforeSend: function () {
+			
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html("Fetching results...");
+			},
+
+			success: function(result) {
+				$('#CustomerHome').hide();
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html(result);
+			},
+
+			error: function(){
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html('An Error occurred in Request: {{request}}');
+			},
+
+			complete: function(){
+				$('#CustomerInformation').show();
+			},
+
+		});
+	}
+
+	function GetOrdersByCategory(){
+
+		ClearActive();
+        $('#CategoriesTab').addClass('selectedTab');
+
+		$.ajax({
+			
+			url: "{% url 'DjTraders.OrdersByCategory' %}",
+			data: {
+				customer_id: {{customer.customer_id}},
+			},
+
+			beforeSend: function () {
+			
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html("Fetching results...");
+			},
+
+			success: function(result) {
+				$('#CustomerHome').hide();
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html(result);
+			},
+
+			error: function(){
+				$('#CustomerInformation').empty();
+				$('#CustomerInformation').html('An Error occurred in Request: {{request}}');
+			},
+
+			complete: function(){
+				$('#CustomerInformation').show();
+			},
+
+		});
+	}
+
+</script>
+
+{% endblock %}

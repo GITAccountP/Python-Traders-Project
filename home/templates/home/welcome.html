@@ -1,0 +1,43 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+{% load static %}
+
+{% comment %}
+	This is a "DTL - Django Template Language comment" 
+	It is defined by comment and end comment blocks.
+	
+	{% this is used to tell Django to do something %}
+	{{ this is used to tell Django to show (render) something.}}
+		
+	Key value pairs are sent from the "render"function
+	and become available to the page.
+{% endcomment %}
+
+{# For Single line comments, you can use this. #}
+
+
+{% block content %}
+<div class="d-flex justify-content-center my-5">
+	<div class="card shadow" style="width: 18rem;">
+		<div class="card-body">
+			<img src="{% static '/images/NotesLogo.jpg'%}" class="card-img-top" alt="...">
+			<h5 class="card-title mt-2">
+				Welcome to Django Traders
+			</h5>
+			<p class="card-text">
+
+			</p>
+			<div class="d-flex justify-content-center">
+				<a 	href="{% url 'home' %}" 
+					class="btn btn-light text-decoration-none text-black shadow p-2 rounded-2">
+				Go to home
+				</a>
+			</div>
+		</div>
+		<div class="card-footer">
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!-- v2.1 Added form for Add/Edit Customers. -->
+{% extends "base.html" %}
+{%load crispy_forms_tags %}
+ 
+{% block content %}
+ 
+{% comment %} <div class="my-2">
+    <h5> Form using crispy form - class based view </h5>
+</div> {% endcomment %}
+{% comment %} <div class="my-4 container shadow ">
+        {% crispy form %}
+</div>  {% endcomment %}
+ 
+ 
+<!--
+    v2.1 For more on rendering Forms
+    see: https://docs.djangoproject.com/en/5.1/ref/forms/api/#as-table
+-->
+<br>
+<div class="my-2" style="display: flex; justify-content: center;">
+    <h5>Add New Product</h5>
+</div>
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {% comment %} {{form}} {% endcomment %}
+        {% comment %} {{form.as_p}} {% endcomment %}
+        {% comment %} {{form.as_table}} {% endcomment %}
+        {{form|crispy}}
+    </table>    
+ 
+    <div class="navbar">
+        <div></div>
+        <div>
+            <button type="submit" class="btn btn-light mt-3">
+                <i class="fa-regular fa-floppy-disk" style="color:darkgreen;"></i>
+                Save
+            </button>
+   
+            <a class="btn btn-light mt-3" href = "{% url 'DjTraders.Products' %}">
+                <i class="fa-solid fa-xmark" style="color: darkred;"></i>
+                Cancel
+            </a>
+        </div>
+    </div>
+ 
+</form>
+ 
+ 
+ 
+{% if form.errors %}
+    <div class="alert alert-danger mt-5">
+        {{form.errors.postal_code.as_text}}
+    </div>
+{% endif %}
+ 
+{% endblock %}

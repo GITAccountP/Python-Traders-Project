@@ -1,0 +1,83 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+
+<!-- define the block content to be injected -->
+
+{% block content %}
+<div class="card my-4">
+	<div class="h6 card-header py-4 custom-header">
+        {{customer}}  Product 
+    </div>
+ 
+    <div class="card-body border-0 custom-body">
+        <div class="row row-cols-2" id="">
+            <div class="col-5">
+              <h2 class="">
+                  Product Information
+              </h2>
+                <div>
+                    <thead>
+                        <th>
+                            <td class="text-center" style=""> <b> Product : </b></td>
+                            <td>{{product.product_name}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="text-center" style=""> <b> Category : </b> </td>
+                            <td>{{product.category.category_name}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="text-center" style="width:35%"> <b> Price : </b> </td>
+                            <td>{{product.price}}</td>
+                        </th>
+                        <br>
+                        <th>
+                            <td class="" style=""> <b> Unit : </b> </td>
+                            <td>{{product.unit}}</td>
+                        </th>
+                        <br>
+                    </thead>
+                </div>
+            </div>
+
+			<div class="col-7">
+                <h5>Customer purchase details of product:</h5>
+                <table class="table table-hover order-column "
+                    id="PurchaseTable" width="100%">
+                    <thead>
+                        <tr class="fs-6">
+                            <th>Customer</th>
+                            <th>Number of Orders</th>
+                            <th>Total Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchase in purchase_summary %}
+                            <tr>
+                                <td>{{ purchase.order__customer__customer_name }}</td>
+                                <td>{{ purchase.total_orders }}</td>
+                                <td>{{ purchase.total_quantity }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">No customers have purchased this product.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+
+
+	<div style="padding-left:90%;padding-bottom:5px;">
+		<a class="btn btn-outline-info mt-3" href = "{% url 'DjTraders.Products' %}" style="right: 0; bottom: 20px; margin-right: 20px; border-radius: 5px;">
+			<i class="fa-solid fa-rotate-left" style="color:black;"></i>
+			Back
+		</a>
+	</div>
+</div>
+
+
+{% endblock %}

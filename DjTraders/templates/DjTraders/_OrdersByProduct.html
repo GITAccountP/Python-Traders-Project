@@ -1,0 +1,39 @@
+{% block content %}
+
+<div class="my-2" id="AllOrdersByProduct">
+
+	<div>
+		<h5 class="">
+			{{customer}} Product Purchased 
+		</h5>
+	</div>
+
+	
+	<div id="ProductsPlot"style="height:600px; width:100%; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+		{{ProductsRevenuePlot|safe}}
+	</div>
+
+	<div id="ProductsPlot"style="height:600px; width:100%; border: 2px solid #2196f3; border-radius: 10px; padding: 10px; background-color: #b2ebf2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+		{{ProductsPlot|safe}}
+	</div>
+
+
+	<div style="padding-left:90%;padding-bottom:5px;">
+		<a class="btn btn-outline-info mt-3" href = "{% url 'DjTraders.Customers' %}" style="right: 0; bottom: 20px; margin-right: 20px; border-radius: 5px;">
+			<i class="fa-solid fa-rotate-left" style="color:black;"></i>
+			Back
+		</a>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+
+	$(document).ready(function ()
+    {
+    });
+
+</script>
+
+{% endblock %}

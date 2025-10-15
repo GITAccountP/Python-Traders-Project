@@ -1,0 +1,38 @@
+<!-- tell the page to "use" the base template -->
+{% extends "base.html" %}
+
+<!-- define the block content to be injected -->
+
+{% block content %}
+
+<div class="nav-justified my-2">
+
+	<a 	class="mx-2 nav-item shadow-sm btn" 
+			href="{% url 'DjTraders.Home' %}"> 
+			Home
+	</a>
+
+	<a 	class="mx-2 nav-item shadow-sm btn" 
+			href="{% url 'DjTraders.Customers' %}"> 
+			Customers
+	</a>
+
+	<a 	class="mx-2 nav-item shadow-sm btn" 
+			href="{% url 'DjTraders.Products' %}"> 
+			Products
+	</a>
+</div>
+
+<div id='home_text' style='text-align: center'>
+
+	<div class="giphy-container">
+		<iframe src="https://giphy.com/embed/Hu475i12tHBg94FIeD" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+	</div>
+	
+	<!--p><a href="https://giphy.com/gifs/pudgypenguins-shopping-supermarket-groceries-Hu475i12tHBg94FIeD"></a></p-->
+</div>
+
+
+{% endblock %}
+
+

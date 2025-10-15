@@ -1,0 +1,29 @@
+{% block content %}
+
+<div class="my-2" id="ProductSales">
+	<div>
+		<h5 class="">
+			{% comment %} {{customer}} Categories of Product Sales  {% endcomment %}
+            Product Sales
+		</h5>
+	</div>
+
+
+	<div id="ProductAnnualSales" style="height:600px">
+		{{ plot_html|safe }}
+	</div>
+
+	
+</div>
+
+
+
+<script type="text/javascript">
+
+	$(document).ready(function ()
+    {
+    });
+
+</script>
+
+{% endblock %}

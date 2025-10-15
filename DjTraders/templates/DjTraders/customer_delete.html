@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+
+	<div class="card">
+		<h4 class="card-header text-center">
+			<i class="fa-solid fa-triangle-exclamation" style="color: firebrick;">
+			</i>
+			Delete Customer 
+			<span class="badge text-bg-warning ms-3 p-2">
+				{{customer.customer_name}} ??
+			</span>
+		</h4>
+
+		<div class="card-body my-3 container">
+			You are about to delete the customer: {{customer.customer_name}}. <br/>
+			This action cannot be undone. 
+			Are you sure?
+		</div>
+
+		<div class="navbar d-flex justify-content-end">
+			<input type="submit" class="btn btn-danger mx-2" value="Delete" />
+
+			<a class="btn btn-light" href = "{% url 'DjTraders.Customers' %}">
+				<i class="fa-solid fa-xmark"></i>
+				Cancel 
+			</a>
+		</div>
+	</div>
+	
+</form>
+
+{% endblock %}
